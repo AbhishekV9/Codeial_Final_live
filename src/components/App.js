@@ -1,30 +1,27 @@
-import React from "react";
-import {connect} from 'react-redux';
+import React from 'react';
+import { connect } from 'react-redux';
 
-import {fetchPosts} from '../actions/posts';
+import { fetchPosts } from '../actions/posts';
+import { PostsList } from './'; //automatically importing from index.js
 
 class App extends React.Component {
   componentDidMount() {
     this.props.dispatch(fetchPosts());
   }
-  
+
   render() {
-    console.log('PROPS',this.props);
+    const { posts } = this.props;
     return (
       <div>
-          App
+        <PostsList posts={posts} />
       </div>
     );
   }
 }
 
-
-function mapStateToProps (state){
-  return{
-    posts:state.posts
+function mapStateToProps(state) {
+  return {
+    posts: state.posts,
   };
 }
-
 export default connect(mapStateToProps)(App);
-
-
