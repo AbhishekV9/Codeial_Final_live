@@ -1,4 +1,10 @@
-export default function posts (state=[]){
-    //current state will look like this,we will have a object and this we will have posts Araay for now:-{ posts:[] }
-    return state;
+import {UPDTAE_POSTS} from '../actions/actionTypes';
+
+export default function posts (state=[],action){
+    switch(action.type){
+        case UPDTAE_POSTS:
+            return action.posts; //this will be the new state
+        default:
+            return state;
+    }
 }

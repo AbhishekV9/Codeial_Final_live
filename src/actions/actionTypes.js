@@ -1,0 +1,1 @@
+export const UPDTAE_POSTS='UPDTAE_POSTS';
