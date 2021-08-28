@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
 class PostsList extends Component {
   render() {
@@ -59,5 +60,11 @@ class PostsList extends Component {
     );
   }
 }
+
+
+//telling that postsList will recive posts as props wich will be an array and it is actually required and it will throw an error if we pas any posts as any other data types
+PostsList.propTypes={
+  posts:PropTypes.array.isRequired
+};
 
 export default PostsList;
