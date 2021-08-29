@@ -1,15 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import  {BrowserRouter as Router,Link,Route } from 'react-router-dom'; //renaming BrowserRouter as Router for us
+import  {BrowserRouter as Router,Link,Route,Switch } from 'react-router-dom'; //renaming BrowserRouter as Router for us
 import PropTypes from 'prop-types';
 
 import { fetchPosts } from '../actions/posts';
-import { PostsList,Navbar } from './'; //automatically importing from index.js
+import { Home,Navbar,Page404, } from './'; //automatically importing from index.js
 
 //all 3 are dummy components ,for learning porpose
 const Login= () => <div> Login</div>
 const SignUp= () => <div> SignUp</div> 
-const Home= () =><div> Home</div> 
+
 
 
 class App extends React.Component {
@@ -24,27 +24,16 @@ class App extends React.Component {
       <Router> 
         <div>
           <Navbar />
-          {/* <PostsList posts={posts} /> */}
-          <ul>
-            <li>
-              <Link to='/'>
-                {/* link tag internally usses <a> tag only but <a> tag gives reloading while loading href and link tag dosent do this */}
-                Home
-              </Link>           
-            </li>
-            <li>
-            <Link to='/login'>Login</Link>
-            </li>
-            <li>
-            <Link to='/signup'>SignUp</Link>   
-            </li>
-          </ul>
-
-           {/* whatever above this lines are will be common if we route to any component */}
-          <Route exact path="/" component={Home} /> 
-          {/* this means if my path becomes exactly "/" then  i want to show Home component otherwise localhost:3000/login will show home as well as login*/}
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={SignUp} />
+          {/* <PostsList posts={posts} /> */} 
+          <Switch>
+              <Route exact path="/" render={(props)=>{
+                return <Home {...props} posts={posts} />
+              }} />  
+              {/* when i want to pass props in Route tag than instead of using component i have to use render but because of this the default props like history that was recived by Home will not be recived so we have to send default props also which is recived by our callback from react */}
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={SignUp} />
+              <Route  component={Page404} />
+          </Switch>
         </div>
       </Router>
     );
