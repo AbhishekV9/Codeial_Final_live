@@ -4,10 +4,9 @@ import  {BrowserRouter as Router,Link,Route,Switch } from 'react-router-dom'; //
 import PropTypes from 'prop-types';
 
 import { fetchPosts } from '../actions/posts';
-import { Home,Navbar,Page404, } from './'; //automatically importing from index.js
+import { Home,Navbar,Page404,Login } from './'; //automatically importing from index.js
 
 //all 3 are dummy components ,for learning porpose
-const Login= () => <div> Login</div>
 const SignUp= () => <div> SignUp</div> 
 
 
