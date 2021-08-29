@@ -1,8 +1,9 @@
+import { APIUrls } from '../helpers/url';
 import {UPDTAE_POSTS} from './actionTypes'
 
 export function fetchPosts(){
     return(dispatch)=>{
-        const url='http://codeial.codingninjas.com:8000/api/v2/posts?page=1&limit=5';
+        const url=APIUrls.fetchPost();
         fetch(url)
          .then((resposnse)=>{
              return resposnse.json() //returns another promise so write another then
