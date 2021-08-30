@@ -49,6 +49,7 @@ export function login(email, password) {
         console.log(data);
         if (data.success) {
           //dispatch action to save user
+          localStorage.setItem('token',data.data.token);
           dispatch(loginSuccess(data.data.user));
           return;
         }
@@ -87,7 +88,7 @@ return (dispatch) => {
     })
     .then((response) => response.json())
     .then((data) => {
-        // console.log('data', data);
+        console.log('data', data);
         if (data.success) {
         // do something
         localStorage.setItem('token', data.data.token);
