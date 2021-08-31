@@ -89,4 +89,4 @@ function mapStateToProps(state) {
     auth: state.auth,
   };
 }
-export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(Navbar);//connectig navbar to state 

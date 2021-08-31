@@ -49,7 +49,7 @@ import {
       case LOG_OUT:
         return {
           ...state,
-          user: {},
+          user: {}, //empty the user object
           isLoggedin: false,
         };
       default:
