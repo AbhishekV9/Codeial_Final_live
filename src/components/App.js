@@ -10,13 +10,32 @@ import { authenticateUser } from '../actions/auth';
 
 //const Settings= () => <div> settings </div> dummy component
 
-const PrivateRoute= (privateRouteProps) => {
-  const { isLoggedin, path , component:Component } = privateRouteProps;
-
-  return <Route path={path} render={(props)=>{
-    return isLoggedin ? <Component {...props} /> : <Redirect to='/login' />
-  }} />
-}
+const PrivateRoute = (privateRouteProps) => {
+  const { isLoggedin, path, component: Component } = privateRouteProps;
+  //console.log('privateRouteProps',privateRouteProps);
+  return (
+    <Route
+      path={path}
+      render={(props) => {
+        //console.log('sdfsfdsd',props);
+        return isLoggedin ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: {   //The state object can be accessed via this.props.location.state in the redirected-to component
+                from: props.location,  //this is from where the user is comming from
+                //2 doubts ---Q1-how state is going inside location 
+                //Q2- location has 4 variables how we are getting only pathname inside from
+              },
+            }}
+          />
+        );
+      }}
+    />
+  );
+};
 
 class App extends React.Component {
   componentDidMount() {
