@@ -1,12 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom'; //renaming BrowserRouter as Router for us
+import { BrowserRouter as Router, Link, Redirect, Route, Switch } from 'react-router-dom'; //renaming BrowserRouter as Router for us
 import PropTypes from 'prop-types';
 import jwt_decode from 'jwt-decode';
 
 import { fetchPosts } from '../actions/posts';
 import { Home, Navbar, Page404, Login, Signup as SignUp } from './'; //automatically importing from index.js
 import { authenticateUser } from '../actions/auth';
+
+const Settings= () => <div> settings </div>
+
+const PrivateRoute= (privateRouteProps) => {
+  const { isLoggedin, path , component:Component } = privateRouteProps;
+
+  return <Route path={path} render={(props)=>{
+    return isLoggedin ? <Component {...props} /> : <Redirect to='/login' />
+  }} />
+}
 
 class App extends React.Component {
   componentDidMount() {
@@ -27,7 +37,7 @@ class App extends React.Component {
 
   //we have to wrap everything between router:-this will basically tell react router that hey this is our root application
   render() {
-    const { posts } = this.props;
+    const { posts,auth } = this.props;
     return (
       <Router>
         <div>
@@ -44,6 +54,7 @@ class App extends React.Component {
             {/* when i want to pass props in Route tag than instead of using component i have to use render but because of this the default props like history that was recived by Home will not be recived so we have to send default props also which is recived by our callback from react */}
             <Route path="/login" component={Login} />
             <Route path="/signup" component={SignUp} />
+            <PrivateRoute path="/settings" component={Settings} isLoggedin={auth.isLoggedin} />
             <Route component={Page404} />
           </Switch>
         </div>
@@ -55,6 +66,7 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     posts: state.posts,
+    auth:state.auth
   };
 }
 
