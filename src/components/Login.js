@@ -65,7 +65,7 @@ class Login extends Component {
         <div className="field">
           <input
             type="password"
-            placeholder="Email"
+            placeholder="Password"
             required
             // ref={this.passwordInputRef}
             onChange={this.handlePasswordChange}
