@@ -10,7 +10,7 @@ import {
   CLEAR_AUTH_STATE,
   EDIT_USER_SUCCESSFUL,
 } from './actionTypes';
-import { APIUrls } from '../helpers/url';
+import { APIUrls } from '../helpers/urls';
 import { getFormBody, getAuthTokenFromLocalStorage } from '../helpers/utils';
 
 export function startLogin() {
