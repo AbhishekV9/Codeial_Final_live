@@ -11,10 +11,18 @@ import PropTypes from 'prop-types';
 import jwt_decode from 'jwt-decode';
 
 import { fetchPosts } from '../actions/posts';
-import { Home, Navbar, Page404, Login, Signup as SignUp, Settings,UserProfile } from './'; //automatically importing from index.js
+import {
+  Home,
+  Navbar,
+  Page404,
+  Login,
+  Signup as SignUp,
+  Settings,
+  UserProfile,
+} from './'; //automatically importing from index.js
 import { authenticateUser } from '../actions/auth';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
-
+import { fetchUserFriends } from '../actions/friends';
 
 //const Settings= () => <div> settings </div> dummy component
 
@@ -61,12 +69,15 @@ class App extends React.Component {
           _id: user._id,
         })
       );
+
+      const c=this.props.dispatch(fetchUserFriends());
+      console.log('fettttt',c)
     }
   }
 
   //we have to wrap everything between router:-this will basically tell react router that hey this is our root application
   render() {
-    const { posts, auth } = this.props;
+    const { posts, auth ,friends} = this.props;
     return (
       <Router>
         <div>
@@ -77,7 +88,14 @@ class App extends React.Component {
               exact
               path="/"
               render={(props) => {
-                return <Home {...props} posts={posts} />;
+                return (
+                  <Home
+                    {...props}
+                    posts={posts}
+                    friends={friends}
+                    isLoggedin={auth.isLoggedin}
+                  />
+                );
               }}
             />
             {/* when i want to pass props in Route tag than instead of using component i have to use render but because of this the default props like history that was recived by Home will not be recived so we have to send default props also which is recived by our callback from react */}
@@ -89,7 +107,7 @@ class App extends React.Component {
               isLoggedin={auth.isLoggedin}
             />
             <PrivateRoute
-              path="/user/:userId"  //by writing like this we can tell the react router that hey whatever is passed after user just give me that string or anything the user passes after the / into a varialble name userId
+              path="/user/:userId" //by writing like this we can tell the react router that hey whatever is passed after user just give me that string or anything the user passes after the / into a varialble name userId
               component={UserProfile}
               isLoggedin={auth.isLoggedin}
             />

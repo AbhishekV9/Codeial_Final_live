@@ -9,4 +9,5 @@ export const APIUrls = {
     limit = 5 //setting default value for page and limit
   ) => `${API_ROOT}/posts?page=${page}&limit=${limit}`,
   userProfile: (userId) => `${API_ROOT}/users/${userId}`,
+  userFriends: () => `${API_ROOT}/friendship/fetch_user_friends`,
 };

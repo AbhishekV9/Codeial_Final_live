@@ -39,7 +39,7 @@ export function fetchUserProfile(userId) {
     })
       .then((response) => response.json())
       .then((data) => {
-        dispatch(userProfileSuccess(data.data.user));
+        dispatch(userProfileSuccess(data.data.user));  //here if there is error then dispatch an action for it.
       });
   };
 }
