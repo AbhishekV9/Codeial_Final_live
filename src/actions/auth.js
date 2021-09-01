@@ -8,9 +8,11 @@ import {
     SIGNUP_START,
     SIGNUP_FAILED,
     SIGNUP_SUCCESS,
-    CLEAR_AUTH_STATE
+    CLEAR_AUTH_STATE,
+    EDIT_USER_SUCCESSFUL,
+    EDIT_USER_FAILED
 } from './actionTypes';
-import { getFormBody } from '../helpers/utils';
+import { getFormBody,getAuthTokenFromLocalStorage } from '../helpers/utils';
 
 export function startLogin() {
   return {
@@ -127,3 +129,52 @@ export function clearAuthState(){
   }
 }
 
+export function editUserSuccessful(user) {
+  return {
+    type: EDIT_USER_SUCCESSFUL,
+    user,
+  };
+}
+
+export function editUserFailed(error) {
+  return {
+    type: EDIT_USER_FAILED,
+    error,
+  };
+}
+
+//Now we have to create main action wich is the asynchronous action of actually making request to the server and for asynchronous action what do we do - we have to make a function which eventually returns a function
+
+export function editUser(name, password, confirmPassword, userId) {
+  return (dispatch) => {
+    const url = APIUrls.editProfile();
+
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`, //since we are logged in and this api is a secure api so we have to pass the jwt token i.e the authentication token as well.
+      },
+      body: getFormBody({
+        name,
+        password,
+        confirm_password: confirmPassword,
+        id: userId,
+      }),
+    })
+      .then((repsonse) => repsonse.json())
+      .then((data) => {
+        console.log('data', data);
+        if (data.success) {
+          dispatch(editUserSuccessful(data.data.user));
+
+          if (data.data.token) {
+            localStorage.setItem('token', data.data.token);
+          }
+          return;
+        }
+
+        dispatch(editUserFailed(data.message));
+      });
+  };
+}
