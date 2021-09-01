@@ -1,25 +1,23 @@
-import { APIUrls } from '../helpers/url';
 import {
-    LOGIN_START,
-    LOGIN_FAILED,
-    LOGIN_SUCCESS,
-    AUTHENTICATE_USER,
-    LOG_OUT,
-    SIGNUP_START,
-    SIGNUP_FAILED,
-    SIGNUP_SUCCESS,
-    CLEAR_AUTH_STATE,
-    EDIT_USER_SUCCESSFUL,
-    EDIT_USER_FAILED
+  LOGIN_START,
+  LOGIN_FAILED,
+  LOGIN_SUCCESS,
+  AUTHENTICATE_USER,
+  LOG_OUT,
+  SIGNUP_START,
+  SIGNUP_FAILED,
+  SIGNUP_SUCCESS,
+  CLEAR_AUTH_STATE,
+  EDIT_USER_SUCCESSFUL,
 } from './actionTypes';
-import { getFormBody,getAuthTokenFromLocalStorage } from '../helpers/utils';
+import { APIUrls } from '../helpers/url';
+import { getFormBody, getAuthTokenFromLocalStorage } from '../helpers/utils';
 
 export function startLogin() {
   return {
     type: LOGIN_START,
   };
 }
-
 export function loginFailed(errorMessage) {
   return {
     type: LOGIN_FAILED,
@@ -30,13 +28,12 @@ export function loginFailed(errorMessage) {
 export function loginSuccess(user) {
   return {
     type: LOGIN_SUCCESS,
-    // user:user shorthand
     user,
   };
 }
 
 export function login(email, password) {
-  //this is the asynchronus action, the action which will require redux thunk package,since this is an asynchronus action we will be returning a function from this
+//this is the asynchronus action, the action which will require redux thunk package,since this is an asynchronus action we will be returning a function from this
   return (dispatch) => {
     dispatch(startLogin());
     const url = APIUrls.login();
@@ -49,10 +46,10 @@ export function login(email, password) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        console.log('data', data);
         if (data.success) {
-          //dispatch action to save user
-          localStorage.setItem('token',data.data.token);
+          // dispatch action to save user
+          localStorage.setItem('token', data.data.token);
           dispatch(loginSuccess(data.data.user));
           return;
         }
@@ -62,71 +59,71 @@ export function login(email, password) {
 }
 
 export function authenticateUser(user) {
-    return {
-      type: AUTHENTICATE_USER,
-      user,
-    };
-  }
-  
-  export function logoutUser() {
-    return {
-      type: LOG_OUT,
-    };
-  }
-  
+  return {
+    type: AUTHENTICATE_USER,
+    user,
+  };
+}
+
+export function logoutUser() {
+  return {
+    type: LOG_OUT,
+  };
+}
+
 export function signup(email, password, confirmPassword, name) {
-return (dispatch) => {
+  return (dispatch) => {
     const url = APIUrls.signup();
     fetch(url, {
-    method: 'POST',
-    headers: {
+      method: 'POST',
+      headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: getFormBody({
+      },
+      body: getFormBody({
         email,
         password,
         confirm_password: confirmPassword,
         name,
-    }),
+      }),
     })
-    .then((response) => response.json())
-    .then((data) => {
-        console.log('data', data);
+      .then((response) => response.json())
+      .then((data) => {
+        // console.log('data', data);
         if (data.success) {
-        // do something
-        localStorage.setItem('token', data.data.token);
-        dispatch(signupSuccessful(data.data.user));
-        return;
+          // do something
+          localStorage.setItem('token', data.data.token);
+          dispatch(signupSuccessful(data.data.user));
+          return;
         }
         dispatch(signupFailed(data.message));
-    });
-};
+      });
+  };
 }
 
 export function startSingup() {
-return {
+  return {
     type: SIGNUP_START,
-};
+  };
 }
 
 export function signupFailed(error) {
-return {
+  return {
     type: SIGNUP_FAILED,
     error,
-};
+  };
 }
 
 export function signupSuccessful(user) {
-return {
+  return {
     type: SIGNUP_SUCCESS,
     user,
-};
+  };
 }
 
-export function clearAuthState(){
-  return{
-  type: CLEAR_AUTH_STATE
-  }
+export function clearAuthState() {
+  return {
+    type: CLEAR_AUTH_STATE,
+  };
 }
 
 export function editUserSuccessful(user) {
@@ -138,7 +135,7 @@ export function editUserSuccessful(user) {
 
 export function editUserFailed(error) {
   return {
-    type: EDIT_USER_FAILED,
+    type: EDIT_USER_SUCCESSFUL,
     error,
   };
 }
@@ -153,7 +150,7 @@ export function editUser(name, password, confirmPassword, userId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`, //since we are logged in and this api is a secure api so we have to pass the jwt token i.e the authentication token as well.
+        Authorization: `Bearer ${getAuthTokenFromLocalStorage()}`,  //since we are logged in and this api is a secure api so we have to pass the jwt token i.e the authentication token as well.
       },
       body: getFormBody({
         name,
@@ -164,7 +161,7 @@ export function editUser(name, password, confirmPassword, userId) {
     })
       .then((repsonse) => repsonse.json())
       .then((data) => {
-        console.log('data', data);
+        console.log('EDIT PROFIle data', data);
         if (data.success) {
           dispatch(editUserSuccessful(data.data.user));
 
