@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import {
   BrowserRouter as Router,
-  Link,
   Redirect,
   Route,
   Switch,
@@ -70,8 +69,8 @@ class App extends React.Component {
         })
       );
 
-      const c=this.props.dispatch(fetchUserFriends());
-      console.log('fettttt',c)
+      this.props.dispatch(fetchUserFriends());
+      
     }
   }
 
@@ -123,6 +122,7 @@ function mapStateToProps(state) {
   return {
     posts: state.posts,
     auth: state.auth,
+    friends: state.friends,
   };
 }
 
