@@ -6,12 +6,12 @@ export const APIUrls = {
   editProfile: () => `${API_ROOT}/users/edit`,
   fetchPost: (
     page = 1,
-    limit = 3 //setting default value for page and limit
+    limit = 23 //setting default value for page and limit
   ) => `${API_ROOT}/posts?page=${page}&limit=${limit}`,
   userProfile: (userId) => `${API_ROOT}/users/${userId}`,
   userFriends: () => `${API_ROOT}/friendship/fetch_user_friends`,
   addFriend: (userId) =>
   `${API_ROOT}/friendship/create_friendship?user_id=${userId}`,
-removeFriend: (userId) =>
+  removeFriend: (userId) =>
   `${API_ROOT}/friendship/remove_friendship?user_id=${userId}`,
 };
