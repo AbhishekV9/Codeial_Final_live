@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
 import { fetchUserProfile } from '../actions/profile';
 
 class UserProfile extends Component {
@@ -13,16 +12,33 @@ class UserProfile extends Component {
     }
   }
 
+  checkIfUserIsAFriend = () => {
+    console.log('this.props', this.props);
+    const { match, friends } = this.props;
+    const userId = match.params.userId;
+
+    const index = friends.map((friend) => friend.to_user._id).indexOf(userId); //it will basically give me all the id's of the user in an array wich we are freind of...till this point friends.map((friend) => friend.to_user._id) and after that the userid that is in my url i am finding its index....indexOf(userId)
+
+    if (index !== -1) {
+      return true;
+    }
+
+    return false;
+  };
+
   render() {
     const {
-      match: { params },profile
+      match: { params },
+      profile,
     } = this.props;
     console.log('this.props', params);
-    const user=profile.user;
+    const user = profile.user;
 
     if (profile.inProgress) {
       return <h1>Loading!</h1>;
     }
+
+    const isUserAFriend = this.checkIfUserIsAFriend();
 
     return (
       <div className="settings">
@@ -44,16 +60,21 @@ class UserProfile extends Component {
         </div>
 
         <div className="btn-grp">
-          <button className="button save-btn">Add Friend</button>
+          {!isUserAFriend ? (
+            <button className="button save-btn">Add Friend</button>
+          ) : (
+            <button className="button save-btn">Remove Friend</button>
+          )}
         </div>
       </div>
     );
   }
 }
 
-function mapStateToProps({ profile }) {
+function mapStateToProps({ profile, friends }) {
   return {
     profile,
+    friends,
   };
 }
 export default connect(mapStateToProps)(UserProfile);
