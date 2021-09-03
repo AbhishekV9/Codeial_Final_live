@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { createPost } from '../actions/posts';
 
 class CreatePost extends Component {
   constructor(props) {
@@ -10,6 +12,7 @@ class CreatePost extends Component {
 
   handleOnClick = () => {
     // dispatch action
+    this.props.dispatch(createPost(this.state.content));
   };
 
   handleChange = (e) => {  //the whole ui will rerenderd with new data when handlechange is called
@@ -36,4 +39,4 @@ class CreatePost extends Component {
   }
 }
 
-export default CreatePost;
+export default connect()(CreatePost); // ineed only dispatch from the store not anything else so connectiong to store like this
