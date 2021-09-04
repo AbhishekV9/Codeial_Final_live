@@ -23,7 +23,7 @@ export default function posts (state=[],action){
                 if (post._id === action.postId) {
                 return {
                     ...post,
-                    likes: [...posts.likes, action.userId],
+                    likes: [...post.likes, action.userId],
                     };
                 }
         
