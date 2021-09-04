@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { fetchUserProfile } from '../actions/profile';
 import { APIUrls } from '../helpers/urls';
 import { getAuthTokenFromLocalStorage } from '../helpers/utils';
-import { addFriend,removeFriend } from '../actions/friends';
-
+import { addFriend, removeFriend } from '../actions/friends';
 
 class UserProfile extends Component {
   constructor(props) {
@@ -22,6 +21,24 @@ class UserProfile extends Component {
     if (match.params.userId) {
       // dispatch an action
       this.props.dispatch(fetchUserProfile(match.params.userId));
+    }
+  }
+
+  componentDidUpdate(prevProps) {
+    const {
+      match: { params: prevParams }, //renaming params to prevPrarams
+    } = prevProps;
+
+    const {
+      match: { params: currentParams }, //renaming params to currentParams
+    } = this.props;
+
+    if (
+      prevParams &&
+      currentParams &&
+      prevParams.userId !== currentParams.userId
+    ) {
+      this.props.dispatch(fetchUserProfile(currentParams.userId));
     }
   }
 
@@ -153,9 +170,7 @@ class UserProfile extends Component {
           )}
 
           {success && (
-            <div className="alert success-dailog">
-             {successMessage}
-            </div>
+            <div className="alert success-dailog">{successMessage}</div>
           )}
           {error && <div className="alert error-dailog">{error}</div>}
         </div>
